@@ -25,8 +25,10 @@ export const GithubConnectButton: FC<GithubConnectButtonProps> = ({
   return (
     <Button
       className="bg-zinc-900 hover:bg-zinc-700 disabled:bg-zinc-700 dark:bg-zinc-100 hover:dark:bg-zinc-300 disabled:dark:bg-zinc-300 text-white dark:text-black disabled:cursor-wait"
-      onClick={() => handleConnect(returnTo, setLoading)}
       disabled={loading}
+      onClick={() => {
+        handleConnect(returnTo, setLoading);
+      }}
       {...props}
     >
       {loading ? <LoaderCircle className="animate-spin" /> : <Github />}

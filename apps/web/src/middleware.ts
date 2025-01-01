@@ -24,7 +24,6 @@ const middleware = async (req: Request): Promise<NextResponse> => {
 
     return NextResponse.next();
   } catch (error) {
-    console.log(error);
     return NextResponse.json(
       { message: "Internal server error" },
       { status: 500 }

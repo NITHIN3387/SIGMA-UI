@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { OAUTH_SECRETS } from "@/constants";
 
-export const GET = (req: Request): NextResponse<unknown> => {
+export const GET = (req: Request): NextResponse => {
   const url = new URL(req.url);
   const returnTo = url.searchParams.get("returnTo");
   const { CLIENT_ID, REDIRECT_URI } = OAUTH_SECRETS;

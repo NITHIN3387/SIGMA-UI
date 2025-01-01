@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import prisma from "@sigma/database";
 import type { UserType } from "@/types/db.types";
 
-export const GET = async (req: Request): Promise<NextResponse<unknown>> => {
+export const GET = async (req: Request): Promise<NextResponse> => {
   const cookiesStore = cookies();
 
   const token =
@@ -22,7 +22,7 @@ export const GET = async (req: Request): Promise<NextResponse<unknown>> => {
     // Ensure `decoded` has a defined type
     const decoded = verify(token, process.env.JWT_SECRET as Secret) as UserType;
 
-    if (!decoded?.email) {
+    if (!decoded.email) {
       return NextResponse.json(
         { message: "Invalid token payload" },
         { status: 401 }

@@ -3,9 +3,9 @@ import prisma from "@sigma/database";
 import { cookies } from "next/headers";
 import { type Secret, sign } from "jsonwebtoken";
 import { OAUTH_SECRETS } from "@/constants";
-import { GitHubEmail, GitHubTokenResponse, GitHubUser } from "./types";
+import type { GitHubEmail, GitHubTokenResponse, GitHubUser } from "./types";
 
-export const GET = async (req: Request): Promise<NextResponse<unknown>> => {
+export const GET = async (req: Request): Promise<NextResponse> => {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   const returnTo = url.searchParams.get("state");
@@ -122,9 +122,18 @@ export const GET = async (req: Request): Promise<NextResponse<unknown>> => {
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    return NextResponse.redirect(returnTo!);
+    if (!returnTo) {
+      return NextResponse.json(
+        { error: "Return URL is missing!" },
+        { status: 400 }
+      );
+    }
+
+    return NextResponse.redirect(returnTo);
   } catch (error) {
-    console.error(error);
+    if (process.env.NODE_ENV === "development") {
+      console.error(error); // For development only
+    }
 
     return NextResponse.json(
       { error: "Internal server error" },

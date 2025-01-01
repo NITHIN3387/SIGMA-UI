@@ -2,7 +2,6 @@
 
 import {
   createContext,
-  type FC,
   type ReactNode,
   useContext,
   useEffect,
@@ -25,14 +24,22 @@ export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Ele
       });
 
       if (response.ok) {
-        const data: { user: AuthUserType } = await response.json();
-        setAuthUser(data.user);
+        const data = await response.json();
+        if (data && data.user) {
+          setAuthUser(data.user);
+        } else {
+          setAuthUser(null);
+        }
       } else {
         setAuthUser(null);
       }
     };
 
-    fetchAuthUser().catch((error) => console.error(error));
+    fetchAuthUser().catch((error) => {
+      if (process.env.NODE_ENV === "development") {
+        console.error(error); // Log only in development
+      }
+    });
   }, []);
 
   return (

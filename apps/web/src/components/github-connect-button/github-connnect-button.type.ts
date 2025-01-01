@@ -6,4 +6,4 @@ export type HandleConnectType = (
   setLoading: Dispatch<SetStateAction<boolean>>,
 ) => void;
 
-export interface GithubConnectButtonProps extends ButtonProps {}
+export type GithubConnectButtonProps = ButtonProps;
