@@ -4,11 +4,11 @@ import { FC, useEffect } from "react";
 import { Button, Logo, ThemeToggler } from "@sigma/ui";
 import { LoaderCircle, User } from "lucide-react";
 import { GithubConnectButton } from "../github-connect-button";
-import { getAuthUser } from "@/context/auth-user";
+import { useAuthUser } from "@/context/auth-user";
 import Image from "next/image";
 
 export const Navbar: FC = () => {
-  const authUser = getAuthUser();
+  const authUser = useAuthUser();
 
   useEffect(() => {}, [authUser]);
 

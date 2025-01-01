@@ -12,7 +12,7 @@ import type { AuthUserType } from "./auth-user.type";
 
 const AuthUserContext = createContext<AuthUserType>(null);
 
-export const getAuthUser = () => useContext(AuthUserContext);
+export const useAuthUser = (): AuthUserType => useContext(AuthUserContext);
 
 export const AuthUserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [authUser, setAuthUser] = useState<AuthUserType>();
@@ -27,7 +27,7 @@ export const AuthUserProvider: FC<{ children: ReactNode }> = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setAuthUser(data.user);
-      } else setAuthUser(null)
+      } else setAuthUser(null);
     };
 
     fetchAuthUser();

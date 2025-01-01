@@ -2,7 +2,7 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { ORIGIN } from "./constants";
 
-const middleware = async (req: Request) => {
+const middleware = async (req: Request): Promise<NextResponse<unknown>> => {
   const cookiesStore = cookies();
 
   const token = cookiesStore.get("user")?.value;
