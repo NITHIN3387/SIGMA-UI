@@ -10,7 +10,11 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@sigma/assets": "workspace:*",
+    "@sigma/database": "workspace:^",
     "@sigma/ui": "workspace:*",
+    "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.469.0",
     "next": "^14.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
@@ -20,6 +24,7 @@
     "@sigma/eslint-config": "workspace:*",
     "@sigma/tailwind-config": "workspace:*",
     "@sigma/typescript-config": "workspace:*",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20.11.24",
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",

@@ -1,0 +1,39 @@
+name: Build and Test
+
+on:
+  push:
+    branches:
+      - main  # Trigger only for the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # Step 2: Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      # Step 3: Install pnpm (assuming you're using pnpm as the package manager)
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      # Step 4: Install dependencies for the entire monorepo
+      - name: Install dependencies
+        run: pnpm install
+
+      # Step 5: Build the TurboRepo
+      - name: TurboRepo Build
+        run: pnpm turbo run build --filter=...
+        env:
+          CLIENT_ID: ${{ secrets.PROD_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.PROD_CLIENT_SECRET }}
+          REDIRECT_URI: ${{ secrets.PROD_REDIRECT_URI }}
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}

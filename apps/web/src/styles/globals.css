@@ -1,3 +1,154 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+  .hydrated {
+    opacity: 1;
+  }
+
+  html:not(.hydrated) {
+    opacity: 0;
+  }
+}
+
+@keyframes multi-text-md {
+  0% {
+    transform: translateY(115%);
+    opacity: 0;
+  }
+  5%,
+  32.5% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  37.5% {
+    transform: translateY(-115%);
+    opacity: 0;
+  }
+  42.5%,
+  70% {
+    transform: translateY(-115%);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-230%);
+    opacity: 0;
+  }
+  80%,
+  97.5% {
+    transform: translateY(-230%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-345%);
+    opacity: 0;
+  }
+}
+
+
+@media (min-width: 768px) {
+  .animate-multi-text {
+    animation: multi-text-md 5s infinite;
+  }
+}
+
+@keyframes multi-text-sm {
+  0% {
+    transform: translateY(105%);
+    opacity: 0;
+  }
+  5%,
+  32.5% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  37.5% {
+    transform: translateY(-105%);
+    opacity: 0;
+  }
+  42.5%,
+  70% {
+    transform: translateY(-105%);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-210%);
+    opacity: 0;
+  }
+  80%,
+  97.5% {
+    transform: translateY(-210%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-315%);
+    opacity: 0;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 767px)  {
+  .animate-multi-text {
+    animation: multi-text-sm 5s infinite;
+  }
+}
+
+@keyframes multi-text {
+  0% {
+    transform: translateY(90%);
+    opacity: 0;
+  }
+  5%,
+  32.5% {
+    transform: translateY(0%);
+    opacity: 1;
+  }
+  37.5% {
+    transform: translateY(-90%);
+    opacity: 0;
+  }
+  42.5%,
+  70% {
+    transform: translateY(-90%);
+    opacity: 1;
+  }
+  75% {
+    transform: translateY(-180%);
+    opacity: 0;
+  }
+  80%,
+  97.5% {
+    transform: translateY(-180%);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-270%);
+    opacity: 0;
+  }
+}
+
+@media (max-width: 639px)  {
+  .animate-multi-text {
+    animation: multi-text 5s infinite;
+  }
+}
+
+.animate-theme-light {
+  animation: light 0.08s ease-in-out forwards
+}
+
+@keyframes light {
+  100% {
+    left: 0;
+  }
+}
+
+.animate-theme-dark {
+  animation: dark 0.08s ease-in-out forwards
+}
+
+@keyframes dark {
+  100% {
+    right: 0;
+  }
+}
