@@ -30,7 +30,7 @@ jobs:
 
       # Step 5: Build the TurboRepo
       - name: TurboRepo Build
-        run: pnpm turbo run build --filter=...
+        run: pnpm turbo run build
         env:
           CLIENT_ID: ${{ secrets.PROD_CLIENT_ID }}
           CLIENT_SECRET: ${{ secrets.PROD_CLIENT_SECRET }}
