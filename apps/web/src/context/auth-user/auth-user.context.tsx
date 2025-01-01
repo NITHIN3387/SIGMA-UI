@@ -7,7 +7,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import type { AuthUserType } from "./auth-user.type";
+import type { AuthResponse, AuthUserType } from "./auth-user.type";
 
 const AuthUserContext = createContext<AuthUserType | null>(null);
 
@@ -24,8 +24,8 @@ export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Ele
       });
 
       if (response.ok) {
-        const data = await response.json();
-        if (data && data.user) {
+        const data: AuthResponse = await response.json();
+        if (data?.user) {
           setAuthUser(data.user);
         } else {
           setAuthUser(null);
@@ -37,7 +37,7 @@ export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Ele
 
     fetchAuthUser().catch((error) => {
       if (process.env.NODE_ENV === "development") {
-        console.error(error); // Log only in development
+        console.error(error);
       }
     });
   }, []);

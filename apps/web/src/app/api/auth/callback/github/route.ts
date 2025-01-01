@@ -36,7 +36,7 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       }
     );
 
-    const data: GitHubTokenResponse = await response.json();
+    const data: GitHubTokenResponse = await response.json() as GitHubTokenResponse;
 
     if (!response.ok) {
       return NextResponse.json(
