@@ -9,7 +9,7 @@ export const GET = async (req: Request) => {
   const code = url.searchParams.get("code");
   const returnTo = url.searchParams.get("state");
 
-  const { CLIENT_ID, CLIENT_SECRET } = OAUTH_SECRETS
+  const { CLIENT_ID, CLIENT_SECRET } = OAUTH_SECRETS;
 
   if (!code)
     return NextResponse.json(
@@ -18,20 +18,21 @@ export const GET = async (req: Request) => {
     );
 
   try {
-    const url = `https://github.com/login/oauth/access_token`;
-
-    const response = await fetch(url, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        client_id: CLIENT_ID,
-        client_secret: CLIENT_SECRET,
-        code,
-      }),
-    });
+    const response = await fetch(
+      "https://github.com/login/oauth/access_token",
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+          code,
+        }),
+      }
+    );
 
     const data = await response.json();
 
