@@ -10,27 +10,29 @@ import {
 } from "react";
 import type { AuthUserType } from "./auth-user.type";
 
-const AuthUserContext = createContext<AuthUserType>(null);
+const AuthUserContext = createContext<AuthUserType | null>(null);
 
-export const useAuthUser = (): AuthUserType => useContext(AuthUserContext);
+export const useAuthUser = (): AuthUserType | null => useContext(AuthUserContext);
 
-export const AuthUserProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [authUser, setAuthUser] = useState<AuthUserType>();
+export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Element {
+  const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
 
   useEffect(() => {
-    const fetchAuthUser = async () => {
+    const fetchAuthUser = async (): Promise<void> => {
       const response = await fetch(`/api/auth/user`, {
         method: "GET",
         credentials: "include",
       });
 
       if (response.ok) {
-        const data = await response.json();
+        const data: { user: AuthUserType } = await response.json();
         setAuthUser(data.user);
-      } else setAuthUser(null);
+      } else {
+        setAuthUser(null);
+      }
     };
 
-    fetchAuthUser();
+    fetchAuthUser().catch((error) => console.error(error));
   }, []);
 
   return (
@@ -38,4 +40,4 @@ export const AuthUserProvider: FC<{ children: ReactNode }> = ({ children }) => {
       {children}
     </AuthUserContext.Provider>
   );
-};
+}

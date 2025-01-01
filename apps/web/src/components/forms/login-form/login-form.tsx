@@ -1,5 +1,5 @@
-import { GithubConnectButton } from "@/components/github-connect-button";
 import type { FC } from "react";
+import { GithubConnectButton } from "@/components/github-connect-button";
 
 export const LoginForm: FC = () => {  
   return (

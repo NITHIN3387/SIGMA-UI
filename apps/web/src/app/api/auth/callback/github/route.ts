@@ -3,19 +3,21 @@ import prisma from "@sigma/database";
 import { cookies } from "next/headers";
 import { type Secret, sign } from "jsonwebtoken";
 import { OAUTH_SECRETS } from "@/constants";
+import { GitHubEmail, GitHubTokenResponse, GitHubUser } from "./types";
 
-export const GET = async (req: Request) => {
+export const GET = async (req: Request): Promise<NextResponse<unknown>> => {
   const url = new URL(req.url);
   const code = url.searchParams.get("code");
   const returnTo = url.searchParams.get("state");
 
   const { CLIENT_ID, CLIENT_SECRET } = OAUTH_SECRETS;
 
-  if (!code)
+  if (!code) {
     return NextResponse.json(
       { error: "Authorization code not provided!" },
       { status: 400 }
     );
+  }
 
   try {
     const response = await fetch(
@@ -34,11 +36,11 @@ export const GET = async (req: Request) => {
       }
     );
 
-    const data = await response.json();
+    const data: GitHubTokenResponse = await response.json();
 
     if (!response.ok) {
       return NextResponse.json(
-        { error: data.error || "Token exchange failed" },
+        { error: data.access_token || "Token exchange failed" },
         { status: response.status }
       );
     }
@@ -46,12 +48,10 @@ export const GET = async (req: Request) => {
     const accessToken = data.access_token;
 
     const userResponse = await fetch("https://api.github.com/user", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    const user = await userResponse.json();
+    const user: GitHubUser = await userResponse.json();
 
     if (!userResponse.ok) {
       return NextResponse.json(
@@ -61,23 +61,19 @@ export const GET = async (req: Request) => {
     }
 
     const emailResponse = await fetch("https://api.github.com/user/emails", {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    const emails = await emailResponse.json();
+    const emails: GitHubEmail[] = await emailResponse.json();
 
     if (!emailResponse.ok) {
       return NextResponse.json(
-        { error: emails.message || "Failed to fetch user emails" },
+        { error: emails[0]?.message || "Failed to fetch user emails" },
         { status: emailResponse.status }
       );
     }
 
-    const primaryEmail = emails.find(
-      (email: { primary: string }) => email.primary
-    )?.email;
+    const primaryEmail = emails.find((email) => email.primary)?.email;
 
     if (!primaryEmail) {
       return NextResponse.json(
@@ -90,7 +86,7 @@ export const GET = async (req: Request) => {
       where: { username: user.login },
     });
 
-    if (!duplicateUser)
+    if (!duplicateUser) {
       await prisma.user.create({
         data: {
           username: user.login,
@@ -99,6 +95,14 @@ export const GET = async (req: Request) => {
           accessToken,
         },
       });
+    }
+
+    const JWT_SECRET = process.env.JWT_SECRET;
+    if (!JWT_SECRET) {
+      throw new Error(
+        "JWT_SECRET is not defined in the environment variables."
+      );
+    }
 
     const token = sign(
       {
@@ -106,21 +110,22 @@ export const GET = async (req: Request) => {
         profilePicture: user.avatar_url,
         email: primaryEmail,
       },
-      process.env.JWT_SECRET as Secret,
+      JWT_SECRET as Secret,
       { expiresIn: "7d" }
     );
 
     const cookieStore = cookies();
     cookieStore.set("user", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production", // Use HTTPS in production
-      path: "/", // Cookie available across the site
-      maxAge: 60 * 60 * 24 * 7, // 1 week
+      secure: process.env.NODE_ENV === "production",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7,
     });
 
-    return NextResponse.redirect(returnTo as string);
+    return NextResponse.redirect(returnTo!);
   } catch (error) {
     console.error(error);
+
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

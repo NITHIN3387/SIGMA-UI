@@ -1,34 +1,48 @@
 import { type Secret, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import prisma from "@sigma/database"
+import prisma from "@sigma/database";
 import type { UserType } from "@/types/db.types";
 
-export const GET = async (req: Request) => {
+export const GET = async (req: Request): Promise<NextResponse<unknown>> => {
   const cookiesStore = cookies();
 
   const token =
-    req.headers.get("authorization")?.split("Berear ")[1] ||
+    req.headers.get("authorization")?.split("Bearer ")[1] ||
     cookiesStore.get("user")?.value;
 
-  if (!token)
+  if (!token) {
     return NextResponse.json(
-      { message: "unauthorized request" },
+      { message: "Unauthorized request" },
       { status: 401 }
     );
+  }
 
   try {
-    const decoded = verify(token as string, process.env.JWT_SECRET as Secret);
+    // Ensure `decoded` has a defined type
+    const decoded = verify(token, process.env.JWT_SECRET as Secret) as UserType;
+
+    if (!decoded?.email) {
+      return NextResponse.json(
+        { message: "Invalid token payload" },
+        { status: 401 }
+      );
+    }
 
     const user = await prisma.user.findUnique({
-      where: { email: (decoded as UserType).email },
+      where: { email: decoded.email },
     });
 
-    return user
-      ? NextResponse.json({ user: decoded })
-      : NextResponse.json({ message: "unauthorized request" }, { status: 401 });
+    if (!user) {
+      return NextResponse.json(
+        { message: "Unauthorized request" },
+        { status: 401 }
+      );
+    }
+
+    return NextResponse.json({ user: decoded });
   } catch (error) {
-    console.log(error);
+    console.error("Error during token verification:", error);
 
     return NextResponse.json(
       { message: "Internal Server Error" },

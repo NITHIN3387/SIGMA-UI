@@ -2,9 +2,8 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 import { ORIGIN } from "./constants";
 
-const middleware = async (req: Request): Promise<NextResponse<unknown>> => {
+const middleware = async (req: Request): Promise<NextResponse> => {
   const cookiesStore = cookies();
-
   const token = cookiesStore.get("user")?.value;
 
   if (!token) {
@@ -16,7 +15,7 @@ const middleware = async (req: Request): Promise<NextResponse<unknown>> => {
       method: "GET",
       credentials: "include",
       headers: {
-        authorization: `Berear ${token}`,
+        authorization: `Bearer ${token}`,
       },
     });
 

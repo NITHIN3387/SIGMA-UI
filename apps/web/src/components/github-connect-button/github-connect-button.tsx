@@ -1,11 +1,11 @@
 "use client";
 
-import { Button } from "@sigma/ui";
-import { Github, LoaderCircle } from "lucide-react";
 import { useState, type FC, useEffect } from "react";
+import { Github, LoaderCircle } from "lucide-react";
+import { Button } from "@sigma/ui";
+import { ORIGIN } from "@/constants";
 import { handleConnect } from "./github-connect-button.utils";
 import type { GithubConnectButtonProps } from "./github-connnect-button.type";
-import { ORIGIN } from "@/constants";
 
 export const GithubConnectButton: FC<GithubConnectButtonProps> = ({
   children,

@@ -1,9 +1,9 @@
-import { OAuthSecretType } from "./constants.type";
+import type { OAuthSecretType } from "./constants.type";
 
 export const ORIGIN = (
   process.env.NODE_ENV === "production"
-    ? process.env.NEXT_PUBLIC_CLIENT_URL_PROD
-    : process.env.NEXT_PUBLIC_CLIENT_URL_DEV
+    ? process.env.NEXT_PUBLIC_CLIENT_URL_PROD!
+    : process.env.NEXT_PUBLIC_CLIENT_URL_DEV!
 ) as string;
 
 export const OAUTH_SECRETS: OAuthSecretType =

@@ -4,7 +4,18 @@
     "build": {
       "dependsOn": ["^build"],
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
+      "outputs": ["dist/**", ".next/**", "!.next/cache/**"],
+      "env": [
+        "NEXT_PUBLIC_CLIENT_URL_DEV",
+        "NEXT_PUBLIC_CLIENT_URL_PROD",
+        "DEV_CLIENT_ID",
+        "DEV_CLIENT_SECRET",
+        "DEV_REDIRECT_URI",
+        "PROD_CLIENT_ID",
+        "PROD_CLIENT_SECRET",
+        "PROD_REDIRECT_URI",
+        "DATABASE_URL"
+      ]
     },
     "lint": {},
     "type-check": {},

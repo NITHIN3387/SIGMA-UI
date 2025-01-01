@@ -1,5 +1,5 @@
-import { LoginForm } from "@/components/forms/login-form";
 import { type FC } from "react";
+import { LoginForm } from "@/components/forms/login-form";
 
 const ConnectPage: FC = () => {
   return (
