@@ -75,7 +75,9 @@ export const GET = async (req: Request) => {
       );
     }
 
-    const primaryEmail = emails.find((email: any) => email.primary)?.email;
+    const primaryEmail = emails.find(
+      (email: { primary: string }) => email.primary
+    )?.email;
 
     if (!primaryEmail) {
       return NextResponse.json(
