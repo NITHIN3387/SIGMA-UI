@@ -19,6 +19,6 @@ const pool = new Pool({ connectionString });
 const adapter = new PrismaNeon(pool);
 export const prisma = global.prisma || new PrismaClient({ adapter });
 
-if (process.env.NODE_ENV === 'development') global.prisma = prisma;
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
 export * from "@prisma/client";
