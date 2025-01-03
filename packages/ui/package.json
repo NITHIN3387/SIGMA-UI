@@ -13,9 +13,9 @@
   },
   "license": "MIT",
   "scripts": {
-    "build": "tailwindcss -i ./src/styles/globals.css -o ./dist/styles/globals.css",
+    "build": "npx tailwindcss -i ./src/styles/globals.css -o ./dist/styles/globals.css",
     "lint": "eslint src/",
-    "dev": "tailwindcss -i ./src/styles/globals.css -o ./dist/styles/globals.css --watch",
+    "dev": "npx tailwindcss -i ./src/styles/globals.css -o ./dist/styles/globals.css --watch",
     "type-check": "tsc --noEmit"
   },
   "peerDependencies": {
