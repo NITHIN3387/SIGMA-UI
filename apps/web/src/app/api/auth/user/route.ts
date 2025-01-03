@@ -29,10 +29,10 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       );
     }
 
-    const user: UserType | null = await prisma.user.findUnique({
+    const user = (await prisma.user.findUnique({
       where: { email: decoded.email },
       select: { username: true, email: true, profilePicture: true },
-    });
+    })) as UserType | null;
 
     if (!user) {
       return NextResponse.json(

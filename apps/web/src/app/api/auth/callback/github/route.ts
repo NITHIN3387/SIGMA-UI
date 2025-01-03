@@ -3,6 +3,7 @@ import prisma from "@sigma/database";
 import { cookies } from "next/headers";
 import { type Secret, sign } from "jsonwebtoken";
 import { OAUTH_SECRETS } from "@/constants";
+import type { UserType } from "@/types/db.types";
 import type { GitHubEmail, GitHubTokenResponse, GitHubUser } from "./types";
 
 export const GET = async (req: Request): Promise<NextResponse> => {
@@ -87,9 +88,10 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       );
     }
 
-    const duplicateUser = await prisma.user.findUnique({
+    const duplicateUser = (await prisma.user.findUnique({
       where: { username: user.login },
-    });
+      select: { username: true, profilePicture: true, email: true },
+    })) as UserType | null;
 
     if (!duplicateUser) {
       await prisma.user.create({
