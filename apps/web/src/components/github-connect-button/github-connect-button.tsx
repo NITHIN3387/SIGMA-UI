@@ -1,16 +1,16 @@
 "use client";
 
-import { useState, type FC, useEffect } from "react";
+import { useState, useEffect, type ReactElement } from "react";
 import { Github, LoaderCircle } from "lucide-react";
 import { Button } from "@sigma/ui";
 import { ORIGIN } from "@/constants";
 import { handleConnect } from "./github-connect-button.utils";
 import type { GithubConnectButtonProps } from "./github-connnect-button.type";
 
-export const GithubConnectButton: FC<GithubConnectButtonProps> = ({
+export function GithubConnectButton({
   children,
   ...props
-}) => {
+}: GithubConnectButtonProps): ReactElement {
   const [loading, setLoading] = useState<boolean>(false);
   const [returnTo, setReturnTo] = useState<string>(ORIGIN);
 
@@ -35,4 +35,4 @@ export const GithubConnectButton: FC<GithubConnectButtonProps> = ({
       {children}
     </Button>
   );
-};
+}

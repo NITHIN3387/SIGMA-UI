@@ -1,10 +1,10 @@
-import type { FC } from "react";
+import type { ReactElement } from "react";
 import { inter } from "@sigma/assets/fonts";
 import { Button } from "@sigma/ui";
 
 const features = ["build", "share", "reuse"];
 
-const HomePage: FC = () => {
+export default function HomePage(): ReactElement {
   return (
     <main>
       <section className="h-dvh w-screen flex flex-col justify-center items-center sm:gap-12 gap-8 bg-primary-bg-light dark:bg-primary-bg-dark md:px-8 sm:px-6 px-4">
@@ -36,6 +36,4 @@ const HomePage: FC = () => {
       </section>
     </main>
   );
-};
-
-export default HomePage;
+}

@@ -6,9 +6,9 @@ import { OAUTH_SECRETS } from "@/constants";
 import type { GitHubEmail, GitHubTokenResponse, GitHubUser } from "./types";
 
 export const GET = async (req: Request): Promise<NextResponse> => {
-  const url = new URL(req.url);
-  const code = url.searchParams.get("code");
-  const returnTo = url.searchParams.get("state");
+  const url: URL = new URL(req.url);
+  const code: string | null = url.searchParams.get("code");
+  const returnTo: string | null = url.searchParams.get("state");
 
   const { CLIENT_ID, CLIENT_SECRET } = OAUTH_SECRETS;
 
@@ -20,7 +20,7 @@ export const GET = async (req: Request): Promise<NextResponse> => {
   }
 
   try {
-    const response = await fetch(
+    const response: Response = await fetch(
       "https://github.com/login/oauth/access_token",
       {
         method: "POST",
@@ -36,7 +36,7 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       }
     );
 
-    const data: GitHubTokenResponse = await response.json() as GitHubTokenResponse;
+    const data = (await response.json()) as GitHubTokenResponse;
 
     if (!response.ok) {
       return NextResponse.json(
@@ -45,13 +45,13 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       );
     }
 
-    const accessToken = data.access_token;
+    const accessToken: string = data.access_token;
 
-    const userResponse = await fetch("https://api.github.com/user", {
+    const userResponse: Response = await fetch("https://api.github.com/user", {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    const user: GitHubUser = await userResponse.json();
+    const user = (await userResponse.json()) as GitHubUser;
 
     if (!userResponse.ok) {
       return NextResponse.json(
@@ -60,11 +60,14 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       );
     }
 
-    const emailResponse = await fetch("https://api.github.com/user/emails", {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    });
+    const emailResponse: Response = await fetch(
+      "https://api.github.com/user/emails",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    );
 
-    const emails: GitHubEmail[] = await emailResponse.json();
+    const emails = (await emailResponse.json()) as GitHubEmail[];
 
     if (!emailResponse.ok) {
       return NextResponse.json(
@@ -73,7 +76,9 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       );
     }
 
-    const primaryEmail = emails.find((email) => email.primary)?.email;
+    const primaryEmail: string | undefined = emails.find(
+      (email) => email.primary
+    )?.email;
 
     if (!primaryEmail) {
       return NextResponse.json(
@@ -131,10 +136,6 @@ export const GET = async (req: Request): Promise<NextResponse> => {
 
     return NextResponse.redirect(returnTo);
   } catch (error) {
-    if (process.env.NODE_ENV === "development") {
-      console.error(error); // For development only
-    }
-
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }

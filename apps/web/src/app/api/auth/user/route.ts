@@ -43,8 +43,6 @@ export const GET = async (req: Request): Promise<NextResponse> => {
 
     return NextResponse.json({ user: decoded });
   } catch (error) {
-    console.error("Error during token verification:", error);
-
     return NextResponse.json(
       { message: "Internal Server Error" },
       { status: 500 }

@@ -11,9 +11,14 @@ import type { AuthResponse, AuthUserType } from "./auth-user.type";
 
 const AuthUserContext = createContext<AuthUserType | null>(null);
 
-export const useAuthUser = (): AuthUserType | null => useContext(AuthUserContext);
+export const useAuthUser = (): AuthUserType | null =>
+  useContext(AuthUserContext);
 
-export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Element {
+export function AuthUserProvider({
+  children,
+}: {
+  children: ReactNode;
+}): JSX.Element {
   const [authUser, setAuthUser] = useState<AuthUserType | null>(null);
 
   useEffect(() => {
@@ -24,8 +29,8 @@ export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Ele
       });
 
       if (response.ok) {
-        const data: AuthResponse = await response.json();
-        if (data?.user) {
+        const data = (await response.json()) as AuthResponse;
+        if (data.user) {
           setAuthUser(data.user);
         } else {
           setAuthUser(null);
@@ -36,9 +41,7 @@ export function AuthUserProvider({ children }: { children: ReactNode }): JSX.Ele
     };
 
     fetchAuthUser().catch((error) => {
-      if (process.env.NODE_ENV === "development") {
-        console.error(error);
-      }
+      error;
     });
   }, []);
 

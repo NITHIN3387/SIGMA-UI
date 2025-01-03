@@ -1,13 +1,13 @@
 "use client";
 
-import { type FC } from "react";
+import type { ReactElement } from "react";
 import Image from "next/image";
 import { LoaderCircle } from "lucide-react";
 import { Button, Logo, ThemeToggler } from "@sigma/ui";
 import { useAuthUser } from "@/context/auth-user";
 import { GithubConnectButton } from "../github-connect-button";
 
-export const Navbar: FC = () => {
+export function Navbar(): ReactElement {
   const authUser = useAuthUser();
 
   let userProfile;

@@ -1,31 +1,30 @@
 "use client";
 
-import { Button } from "@sigma/ui";
+import { type ReactElement, useEffect, useState } from "react";
 import { Moon, Sun } from "lucide-react";
-import { type FC, useEffect, useState } from "react";
+import { Button } from "../button";
 import type { ThemeType } from "./theme-toggler.types";
 import { toggleTheme } from "./theme-toggler.utils";
 
-export const ThemeToggler: FC = () => {
+export function ThemeToggler(): ReactElement {
   const [theme, setTheme] = useState<ThemeType>("dark");
 
   useEffect(() => {
-    const savedTheme =
-      (window.localStorage.getItem("theme") as ThemeType) || "dark";
-    
-    setTheme(savedTheme)
+    const savedTheme = window.localStorage.getItem("theme") || "dark";
+
+    setTheme(savedTheme as ThemeType);
 
     savedTheme === "light"
       ? document.documentElement.classList.remove("dark")
       : document.documentElement.classList.add("dark");
-    
+
     document.documentElement.classList.add("hydrated");
   }, []);
 
   return (
     <Button
       className="px-1 rounded-full h-fit space-x-2 bg-zinc-100 dark:bg-zinc-900 border dark:border-zinc-800 relative text-primary-text-light dark:text-primary-text-dark"
-      onClick={() => toggleTheme(theme, setTheme)}
+      onClick={() => {toggleTheme(theme, setTheme)}}
       variant="ghost"
     >
       <div
@@ -35,4 +34,4 @@ export const ThemeToggler: FC = () => {
       <Moon className="z-10" />
     </Button>
   );
-};
+}
