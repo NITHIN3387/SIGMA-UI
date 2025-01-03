@@ -25,6 +25,7 @@
     "PROD_CLIENT_ID",
     "PROD_CLIENT_SECRET",
     "PROD_REDIRECT_URI",
-    "DATABASE_URL"
+    "DATABASE_URL",
+    "NODE_ENV"
   ]
 }

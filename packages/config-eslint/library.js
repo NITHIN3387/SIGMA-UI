@@ -16,6 +16,7 @@ module.exports = {
     "@vercel/style-guide/eslint/node",
     "@vercel/style-guide/eslint/typescript",
   ].map(require.resolve),
+  plugins: ["only-warn"],
   parserOptions: {
     project,
   },
