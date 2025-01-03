@@ -6,6 +6,8 @@
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
       "outputs": ["dist/**", ".next/**", "!.next/cache/**"]
     },
+    "db:migrate:deploy": {},
+    "db:push": {},
     "lint": {},
     "type-check": {},
     "dev": {
@@ -14,6 +16,9 @@
     },
     "clean": {
       "cache": false
+    },
+    "generate": {
+      "dependsOn": ["^generate"]
     }
   },
   "globalDependencies": [
