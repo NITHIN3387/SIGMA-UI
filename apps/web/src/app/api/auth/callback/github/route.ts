@@ -37,9 +37,9 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       }
     );
 
-    const data = (await response.json()) as GitHubTokenResponse;
+    const data: GitHubTokenResponse = (await response.json()) as GitHubTokenResponse;
 
-    if (!response.ok) {
+    if (!response.ok || !data.access_token) {
       return NextResponse.json(
         { error: data.access_token || "Token exchange failed" },
         { status: response.status }
@@ -52,7 +52,7 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
 
-    const user = (await userResponse.json()) as GitHubUser;
+    const user: GitHubUser = (await userResponse.json()) as GitHubUser;
 
     if (!userResponse.ok) {
       return NextResponse.json(
@@ -68,7 +68,7 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       }
     );
 
-    const emails = (await emailResponse.json()) as GitHubEmail[];
+    const emails: GitHubEmail[] = (await emailResponse.json()) as GitHubEmail[];
 
     if (!emailResponse.ok) {
       return NextResponse.json(
@@ -88,7 +88,7 @@ export const GET = async (req: Request): Promise<NextResponse> => {
       );
     }
 
-    const duplicateUser = (await prisma.user.findUnique({
+    const duplicateUser: UserType | null = (await prisma.user.findUnique({
       where: { username: user.login },
       select: { username: true, profilePicture: true, email: true },
     })) as UserType | null;
