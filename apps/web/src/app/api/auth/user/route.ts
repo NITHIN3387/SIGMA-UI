@@ -1,7 +1,7 @@
 import { type Secret, verify } from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import prisma from "@sigma/database";
+import { prisma } from "@sigma/database";
 import type { UserType } from "@/types/db.types";
 
 export const GET = async (req: Request): Promise<NextResponse> => {

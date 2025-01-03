@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "@sigma/database";
+import { prisma } from "@sigma/database";
 import { cookies } from "next/headers";
 import { type Secret, sign } from "jsonwebtoken";
 import { OAUTH_SECRETS } from "@/constants";
