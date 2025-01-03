@@ -22,6 +22,7 @@ module.exports = {
     ].map(require.resolve),
     "turbo",
   ],
+  plugins: ["only-warn"],
   parserOptions: {
     project,
   },
