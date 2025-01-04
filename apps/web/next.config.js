@@ -11,4 +11,10 @@ module.exports = {
       },
     ],
   },
+  experimental: {
+    outputFileTracingIncludes: {
+      "/api": ["packages/database/node_modules/.prisma/**"],
+    },
+    serverComponentsExternalPackages: ["@prisma/client", ".prisma"],
+  },
 };
