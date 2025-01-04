@@ -7,15 +7,17 @@ neonConfig.webSocketConstructor = ws;
 
 neonConfig.poolQueryViaFetch = true;
 
-const globalForPrisma = global as unknown as { prisma: PrismaClient };
+declare global {
+  var prisma: PrismaClient | undefined;
+}
 
 const connectionString = `${process.env.DATABASE_URL}`;
 
 const pool = new Pool({ connectionString });
 const adapter = new PrismaNeon(pool);
 
-export const prisma = globalForPrisma.prisma || new PrismaClient({ adapter });
+export const prisma = global.prisma || new PrismaClient({ adapter });
 
-if (process.env.NODE_ENV !== "production") globalForPrisma.prisma = prisma;
+if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
 export * from "@prisma/client";
