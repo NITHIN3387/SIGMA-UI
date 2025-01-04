@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from ".prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 import { Pool, neonConfig } from "@neondatabase/serverless";
 import ws from "ws";
@@ -20,4 +20,4 @@ export const prisma = global.prisma || new PrismaClient({ adapter });
 
 if (process.env.NODE_ENV !== "production") global.prisma = prisma;
 
-export * from "@prisma/client";
+export * from ".prisma/client";
