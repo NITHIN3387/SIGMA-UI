@@ -10,11 +10,11 @@
     "db:push": "prisma db push",
     "dev": "tsup src/* --watch",
     "format": "prisma format",
-    "generate": "prisma generate --schema=./prisma/schema.prisma",
+    "generate": "prisma generate",
     "lint": "eslint . --max-warnings 0",
-    "prebuild": "prisma generate --schema=./prisma/schema.prisma",
+    "prebuild": "prisma generate",
     "build": "tsup src/*",
-    "predev": "prisma generate --schema=./prisma/schema.prisma",
+    "predev": "prisma generate",
     "studio": "prisma studio"
   },
   "devDependencies": {
