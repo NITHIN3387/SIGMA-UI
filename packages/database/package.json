@@ -12,7 +12,7 @@
     "format": "prisma format",
     "generate": "prisma generate",
     "lint": "eslint . --max-warnings 0",
-    "build": "prisma generate && tsup src/*",
+    "build": "prisma generate",
     "predev": "prisma generate",
     "studio": "prisma studio"
   },
